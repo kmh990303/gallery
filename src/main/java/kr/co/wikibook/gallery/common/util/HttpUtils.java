@@ -13,7 +13,7 @@ public class HttpUtils {
         return req.getSession().getAttribute(key);
     }
 
-    // 세션 조회
+    // 세션 삭제
     public static void removeSession(HttpServletRequest req, String key) {
         req.getSession().removeAttribute(key);
     }

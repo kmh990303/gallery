@@ -5,6 +5,7 @@ import lombok.Getter;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
+import kr.co.wikibook.gallery.item.dto.ItemRead;
 
 @Getter
 @Entity
@@ -31,4 +32,14 @@ public class Item {
     @Column(nullable = false, updatable = false)
     @CreationTimestamp
     private LocalDateTime created;
+
+    public ItemRead toRead() {
+        return ItemRead.builder()
+                .id(id)
+                .name(name)
+                .imgPath(imgPath)
+                .price(price)
+                .discountPer(discountPer)
+                .build();
+    }
 }
