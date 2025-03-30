@@ -1,6 +1,19 @@
 <script setup lang="ts">
+import {useAccountStore} from "@/stores/account.js";
+import {logout} from "@/services/accountService";
+import {useRouter} from "vue-router";
+
+const accountStore = useAccountStore();
+
+const router = useRouter();
+
 const logoutAccount = async () => {
-  window.alert("준비 중입니다.");
+  const res = await logout();
+
+  if (res.status === 200) {
+    accountStore.setLoggedIn(false);
+    await router.push("/");
+  }
 }
 </script>
 
@@ -12,7 +25,7 @@ const logoutAccount = async () => {
           <strong>Gallery</strong>
         </router-link>
         <div class="menus d-flex gap-3">
-          <template v-if="true">
+          <template v-if="!accountStore.loggedIn">
             <router-link to="/login">로그인</router-link>
             <router-link to="/join">회원가입</router-link>
           </template>
