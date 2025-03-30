@@ -5,6 +5,7 @@ import lombok.Getter;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
+import kr.co.wikibook.gallery.order.dto.OrderRead;
 
 @Entity
 @Getter
@@ -48,5 +49,16 @@ public class Order {
         this.payment = payment;
         this.cardNumber = cardNumber;
         this.amount = amount;
+    }
+
+    public OrderRead toRead() {
+        return OrderRead.builder()
+                .id(id)
+                .name(name)
+                .address(address)
+                .payment(payment)
+                .amount(amount)
+                .created(created)
+                .build();
     }
 }
