@@ -1,5 +1,7 @@
 <script setup>
 import {computed} from "vue";
+import {addItem} from "@/services/CartService.js";
+import {useRouter} from "vue-router";
 
 const props = defineProps({
   item: {
@@ -15,8 +17,14 @@ const computedItemDiscountPrice = computed(() => {
   return (props.item.price - (props.item.price * props.item.discountPer / 100)).toLocaleString() + '원';
 })
 
+const router = useRouter();
+
 const put = async () => {
-  window.alert("준비 중입니다.");
+  const res = await addItem(props.item.id);
+
+  if (res.status === 200 && window.confirm('장바구니에 상품을 담았습니다. 장바구니로 이동하시겠습니까?')) {
+    await router.push("/cart");
+  }
 }
 </script>
 
