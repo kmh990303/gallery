@@ -8,9 +8,11 @@ import kr.co.wikibook.gallery.order.entity.Order;
 import kr.co.wikibook.gallery.order.entity.OrderItem;
 import kr.co.wikibook.gallery.order.dto.OrderRead;
 import kr.co.wikibook.gallery.order.repository.OrderRepository;
+import kr.co.wikibook.gallery.common.util.EncryptionUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,6 +63,10 @@ public class BaseOrderService implements OrderService {
         }
 
         orderReq.setAmount(amount);
+
+        if ("card".equals(orderReq.getPayment())) {
+            orderReq.setCardNumber(EncryptionUtils.encrypt(orderReq.getCardNumber()));
+        }
 
         Order order = orderRepository.save(orderReq.toEntity(memberId));
 

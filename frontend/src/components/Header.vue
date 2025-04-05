@@ -1,5 +1,5 @@
-<script setup lang="ts">
-import {useAccountStore} from "@/stores/account.js";
+<script setup>
+import {useAccountStore} from "@/stores/account";
 import {logout} from "@/services/accountService";
 import {useRouter} from "vue-router";
 
@@ -11,6 +11,7 @@ const logoutAccount = async () => {
   const res = await logout();
 
   if (res.status === 200) {
+    accountStore.setAccessToken("");
     accountStore.setLoggedIn(false);
     await router.push("/");
   }

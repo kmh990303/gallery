@@ -5,6 +5,7 @@ import lombok.Getter;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
+
 import kr.co.wikibook.gallery.order.dto.OrderRead;
 
 @Entity
@@ -28,7 +29,7 @@ public class Order {
     @Column(length = 10, nullable = false)
     private String payment;
 
-    @Column(length = 16)
+    @Column(length = 50)
     private String cardNumber;
 
     @Column(nullable = false)

@@ -2,6 +2,7 @@
 import {reactive} from "vue";
 import {login} from "@/services/accountService";
 import {useRouter} from "vue-router";
+import {useAccountStore} from "@/stores/account.js";
 
 const state = reactive({
   form: {
@@ -12,11 +13,14 @@ const state = reactive({
 
 const router = useRouter();
 
+const accountStore = useAccountStore();
+
 const submit = async () => {
   const res = await login(state.form);
 
   switch (res.status) {
     case 200:
+      accountStore.setAccessToken(res.data);
       await router.push("/");
       break;
     case 404:
