@@ -6,4 +6,6 @@ public interface MemberService {
     void save(String name, String loginId, String loginPw);
 
     Member find(String loginId, String loginPw);
+
+    Member find(String loginId);
 }

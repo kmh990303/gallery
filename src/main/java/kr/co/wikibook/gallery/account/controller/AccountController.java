@@ -16,6 +16,8 @@ import kr.co.wikibook.gallery.block.service.BlockService;
 import kr.co.wikibook.gallery.common.util.HttpUtils;
 import kr.co.wikibook.gallery.account.etc.AccountConstants;
 
+import kr.co.wikibook.gallery.member.service.MemberService;
+
 import java.util.Map;
 
 @RestController
@@ -24,13 +26,19 @@ import java.util.Map;
 public class AccountController {
     private final AccountHelper accountHelper;
     private final BlockService blockService;
+    private final MemberService memberService;
 
     @PostMapping("/api/account/join")
     public ResponseEntity<?> join(@RequestBody AccountJoinRequest joinReq) {
 
         if (!StringUtils.hasLength(joinReq.getName()) ||
-        !StringUtils.hasLength(joinReq.getLoginId()) || !StringUtils.hasLength(joinReq.getLoginPw())) {
+                !StringUtils.hasLength(joinReq.getLoginId()) || !StringUtils.hasLength(joinReq.getLoginPw())) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        // 중복 로그인 아이디가 있으면
+        if (memberService.find(joinReq.getLoginId()) != null) {
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
 
         accountHelper.join(joinReq);
@@ -41,7 +49,7 @@ public class AccountController {
     public ResponseEntity<?> login(HttpServletRequest req, HttpServletResponse res, @RequestBody AccountLoginRequest loginReq) {
 
         if (!StringUtils.hasLength(loginReq.getLoginId()) ||
-        !StringUtils.hasLength(loginReq.getLoginPw())) {
+                !StringUtils.hasLength(loginReq.getLoginPw())) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 

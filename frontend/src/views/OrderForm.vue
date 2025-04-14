@@ -27,6 +27,26 @@ const computedTotalPrice = computed(() => {
 })
 
 const submit = async () => {
+  if (!state.form.name?.trim()) {
+    window.alert("이름을 입력해주세요.");
+    document.getElementById("name")?.focus();
+    return;
+  } else if (!state.form.address?.trim()) {
+    window.alert("주소를 입력해주세요.");
+    document.getElementById("address")?.focus();
+    return;
+  } else if (state.form.payment === 'card') {
+    if (!state.form.cardNumber?.trim()) {
+      window.alert("카드 번호를 입력해주세요.");
+      document.getElementById("cardNum")?.focus();
+      return;
+    }
+  } else if (state.form.cardNumber.length > 16 || parseInt(state.form.cardNumber).toString() !== state.form.cardNumber) {
+    window.alert("카드 번호는 16자 이하의 숫자로만 입력해주세요.");
+    document.getElementById("cardNum")?.focus();
+    return;
+  }
+
   if (state.form.payment !== "card") {
     state.form.cardNumber = "";
   }
