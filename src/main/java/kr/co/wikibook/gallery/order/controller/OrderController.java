@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 @RestController
 @RequestMapping("/v1")
 @RequiredArgsConstructor
@@ -20,10 +23,10 @@ public class OrderController {
     private final AccountHelper accountHelper;
 
     @GetMapping("/api/orders")
-    public ResponseEntity<?> readAll(HttpServletRequest req) {
+    public ResponseEntity<?> readAll(HttpServletRequest req, Pageable pageable) {
         Integer memberId = accountHelper.getMemberId(req);
 
-        List<OrderRead> orders = orderService.findAll(memberId);
+        Page<OrderRead> orders = orderService.findAll(memberId, pageable);
 
         return new ResponseEntity<>(orders, HttpStatus.OK);
     }

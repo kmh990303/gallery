@@ -18,6 +18,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 @Service
 @RequiredArgsConstructor
 public class BaseOrderService implements OrderService {
@@ -27,8 +30,9 @@ public class BaseOrderService implements OrderService {
     private final ItemService itemService;
 
     @Override
-    public List<OrderRead> findAll(Integer memberId) {
-        return orderRepository.findAllByMemberIdOrderByIdDesc(memberId).stream().map(Order::toRead).toList();
+    public Page<OrderRead> findAll(Integer memberId, Pageable pageable) {
+        Page<Order> orders = orderRepository.findAllByMemberIdOrderByIdDesc(memberId, pageable);
+        return orders.map(Order::toRead);
     }
 
     @Override
